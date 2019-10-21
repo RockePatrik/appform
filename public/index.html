@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>APPNeza</title>
+
+    <!-- CSS  -->
+    
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <script src="js/materialize.min.js"></script>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <link rel="icon" sizes="32x32" href="img/ut.png">
+
+
+   <!-- Color de la barra de navegación de Chrome. -->
+   <meta name="theme-color" content="#ffcb2d">
+
+   <!-- Configuración de la Web App Chrome y Microsoft Store. -->
+   <link rel="manifest" href="manifest.json">
+
+   <!-- Configuración para del acceso directo en Windows Edge/IE -->
+   <!-- Icono -->
+   <meta name="msapplication-TileImage" content="img/ut.png">
+   <!-- Color de tile. -->
+   <meta name="msapplication-TileColor" content="#4fc3f7">
+
+   <!-- Configuración para Web Clip en Safari. -->
+   <meta name="mobile-web-app-capable" content="yes">
+   <link rel="apple-touch-icon" sizes="1024x1024" href="img/ut.png">
+   <link rel="apple-touch-startup-image" sizes="1024x1024"
+     href="img/ut.png">
+   <meta name="apple-mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-status-bar-style" content="black">
+   
+
+   <!-- update the version number as needed -->
+   <script defer src="/__/firebase/6.0.2/firebase-app.js"></script>
+   <!-- include only the Firebase features as you need -->
+   <script defer src="/__/firebase/6.0.2/firebase-auth.js"></script>
+   <script defer src="/__/firebase/6.0.2/firebase-firestore.js"></script>
+   <script defer src="/__/firebase/6.0.2/firebase-messaging.js"></script>
+   <script defer src="/__/firebase/6.0.2/firebase-storage.js"></script>
+   <!-- initialize the SDK after all desired features are loaded -->
+   <script defer src="/__/firebase/init.js"></script>
+</head>
+
+<body>
+ 
+     <nav class=" teal accent-4 menu" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="#" class="brand-logo"><img src="img/logo%20UTN%20sin%20fondo.gif" class="responsive-img imgStyle"></a>
+
+            <h1 class="titulo">Universidad Tecnológica de Nezahualcóyotl</h1>
+            <a href="#" data-target="nav-mobile" class="sidenav-trigger "><i class="material-icons white-text"></i></a>
+        </div>
+    </nav>
+
+    <div class="container ">
+        <div class="section">
+
+            <!--   Icon Section   -->
+            <div class="row">
+                <form name="operacion" class="col s12 ">
+                    <div class="row">
+                       
+
+                            <center>
+                                    <h5>Calcular Promedio</h5>
+                             </center>
+                                    
+                                        <div class="input-field col s12">
+                                            <input placeholder="Ingrese promedio" id="vr1" type="number" required min="0.1" max="10" class="validate" accesskey="1" step="any">
+                                            <label for="vr1">Promedio 1</label>
+                                        </div>
+                                    
+                                   
+                                    
+                                        <div class="input-field col s12">
+                                            <input placeholder="Ingrese promedio"id="vr2" type="number" required min="0.1" max="10" class="validate" accesskey="1" step="any">
+                                            <label for="vr2">Promedio 2</label>
+                                        </div>
+
+                                   
+                                        <div class="input-field col s12">
+                                            <input placeholder="Ingrese promedio" id="vr3" type="number" required min="0.1" max="10" class="validate" accesskey="1" step="any">
+                                            <label for="vr3">Promedio 3</label>
+                                        </div>
+                                      <div class="col s12">
+
+                                          <button class="btn waves-effect waves-light  teal lighten-2" type="submit">
+                                              <span class="left black-text">Calcular</span>
+                                              <img class="rright" style=" margin-left:3px; width: 12px; height: 12px;" src="img/send.png"  /> 
+                                          </button>
+                                      </div>
+                                    
+                                    <td class="calific">
+                                        <p>
+                                            <output name="respuesta"></output>
+                                        </p>
+                                    </td>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+     <form name="vista">
+    <div class="row">
+        <div class="col s12 center">
+            
+        </div> 
+                <div class="col s12 center">
+                      <main role="main">
+                       <p><output name="mensaje">Cargando Firebase SDK&hellip;</output></p>
+                     </main>
+                </div>
+            </div>
+   
+  </form>
+    <footer class="page-footer grey lighten-5">
+        <div class="container">
+
+        </div>
+        <div class="footer-copyright">
+            <div class="container teal-text darken-4-text">
+                © <a class="teal-text  darken-4-text" href="#">Rocke Patricio Hernandez Nuñez IC-51</a>
+            </div>
+        </div>
+    </footer>
+   <script>
+     /* Registra un service worker para instalar la aplicación en el
+      * caché del navegador. */
+     async function registraServiceWorker() {
+       if ("serviceWorker" in navigator) {
+         try {
+           const registro = await navigator.serviceWorker.register("sw.js");
+           console.log("Service Worker registrado.");
+           console.log(registro);
+         } catch (e) {
+           console.log(e);
+         }
+       }
+     }
+
+     registraServiceWorker();
+     document.addEventListener('DOMContentLoaded', function () {
+       try {
+         let app = firebase.app();
+         let features = ['auth', 'database', 'messaging', 'storage']
+           .filter(feature => typeof app[feature] === 'function');
+         document.vista.mensaje.value =
+           `Firebase SDK cargó con: ${features.join(', ')}`;
+       } catch (e) {
+         console.log(e);
+         document.vista.mensaje.value =
+           'Error cargando Firebase SDK. Revisa la consola del navegador.';
+       }
+     });
+   </script>
+    <script>
+            "use strict";
+            document.operacion.addEventListener("submit", calcProm);
+            function calcProm(evt) {
+            evt.preventDefault();
+            const vr1 = document.operacion.vr1.value.trim();
+            const vr2 = document.operacion.vr2.value.trim();
+            const vr3 = document.operacion.vr3.value.trim();
+           
+            var prom = (parseFloat(vr1)+parseFloat(vr2)+parseFloat(vr3))/3;
+            var round = Math.round(prom*100)/100;
+
+            document.operacion.respuesta.value = `Promedio ${round}`;
+            }
+            
+         </script>
+    
+</body>
+
+</html>
